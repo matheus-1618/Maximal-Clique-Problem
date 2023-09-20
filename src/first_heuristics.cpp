@@ -82,7 +82,7 @@ int main() {
 
     cout << "[Implementation] Maximal Clique: ";
     for (int v : maximalClique) {
-        cout << v+1 << " ";
+        cout << v << " ";
     }
     cout << endl;
 

@@ -16,8 +16,8 @@ cliques_maximais = list(nx.find_cliques(G))
 # Encontrar a clique máxima (a maior)
 clique_maxima = max(cliques_maximais, key=len)
 
-#print("Cliques maximais encontradas:")
-# for clique in cliques_maximais:
-#     print(clique)
+print("Cliques maximais encontradas:")
+for clique in cliques_maximais:
+    print(sorted(map(int,clique)))
 
-print("Clique máxima encontrada:", sorted(map(int,clique_maxima)))
+print("[Verification] Maximal Clique: ", sorted(map(int,clique_maxima)))
