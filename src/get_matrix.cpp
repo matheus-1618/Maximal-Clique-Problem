@@ -2,10 +2,16 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cmath>
+#include <algorithm>
 
 using namespace std;
 
-// Função para ler o graph a partir do arquivo de entrada
+
+bool biggerThan(int a, int b){
+    return a < b;
+}
+
 vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
     ifstream file(fileName);
     int numEdges;
@@ -38,46 +44,40 @@ vector<int> FindMaximalClique(vector<vector<int>>& graph, int numVertex) {
         int v = candidates.back();
         candidates.pop_back();
         bool canAdd = true;
-
         for (int u : MaximalClique) {
             if (graph[u][v] == 0) {
                 canAdd = false;
                 break;
             }
         }
-
         if (canAdd) {
             MaximalClique.push_back(v);
             vector<int> newCandidates;
-
             for (int u : candidates) {
                 bool adjacentToAll = true;
-
                 for (int c : MaximalClique) {
                     if (graph[u][c] == 0) {
                         adjacentToAll = false;
                         break;
                     }
                 }
-
                 if (adjacentToAll) {
                     newCandidates.push_back(u);
                 }
             }
-
             candidates = newCandidates;
         }
     }
-
     return MaximalClique;
 }
 
 int main() {
-    int numVertex = 1000;
+    int numVertex = 100;
     vector<vector<int>> grafo;
 
     grafo = ReadGraph("grafo.txt", numVertex);
     vector<int> maximalClique = FindMaximalClique(grafo, numVertex);
+    sort(maximalClique.begin(),maximalClique.end(),biggerThan);
 
     cout << "Maximal Clique: ";
     for (int v : maximalClique) {
