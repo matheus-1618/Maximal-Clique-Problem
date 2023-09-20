@@ -7,8 +7,17 @@
 
 using namespace std;
 
+struct node {
+    int id;
+    int edges;
+};
+
 bool biggerThan(int a, int b){
     return a < b;
+}
+
+bool biggerEdges(node a, node b){
+    return a.edges < b.edges;
 }
 
 vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
@@ -32,32 +41,46 @@ vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
 
 vector<int> FindMaximalClique(vector<vector<int>>& graph, int numVertex) {
     vector<int> MaximalClique;
-    vector<int> candidates;
+    vector<node> candidates;
 
     // In the begin, all nodes are possible candidates
     for (int i = 0; i < numVertex; ++i) {
-        candidates.push_back(i);
+        node candidate;
+        candidate.id = i;
+        candidates.push_back(candidate);
     }
 
+    for (node y : candidates) {
+        y.edges = 0;
+        for (int j = 0; j < numVertex; j++){
+            y.edges += graph[j][y.id];
+        }
+    }
+
+    for (node y : candidates) {
+        cout << y.id << " " << y.edges << endl;
+    }
+    sort(candidates.begin(),candidates.end(),biggerEdges);
+
     while (!candidates.empty()) {
-        int v = candidates.back();
+        node v = candidates.back();
         candidates.pop_back();
         bool canAdd = true;
 
         for (int u : MaximalClique) {
-            if (graph[u][v] == 0) {
+            if (graph[u][v.id] == 0) {
                 canAdd = false;
                 break;
             }
         }
 
         if (canAdd) {
-            MaximalClique.push_back(v);
-            vector<int> newCandidates;
-            for (int u : candidates) {
+            MaximalClique.push_back(v.id);
+            vector<node> newCandidates;
+            for (node u : candidates) {
                 bool adjacentToAll = true;
                 for (int c : MaximalClique) {
-                    if (graph[u][c] == 0) {
+                    if (graph[u.id][c] == 0) {
                         adjacentToAll = false;
                         break;
                     }
@@ -80,9 +103,9 @@ int main() {
     vector<int> maximalClique = FindMaximalClique(grafo, numVertex);
     sort(maximalClique.begin(),maximalClique.end(),biggerThan);
 
-    cout << "[Implementation] Maximal Clique: ";
+    cout << "[Implementation-Heuristics] Clique's Size: "<< maximalClique.size() << " Maximal Clique: ";
     for (int v : maximalClique) {
-        cout << v << " ";
+        cout << v+1 << " ";
     }
     cout << endl;
 

@@ -80,7 +80,7 @@ int main() {
     vector<int> maximalClique = FindMaximalClique(grafo, numVertex);
     sort(maximalClique.begin(),maximalClique.end(),biggerThan);
 
-    cout << "[Implementation] Maximal Clique: ";
+    cout << "[Implementation-Basics] Clique's Size: "<< maximalClique.size() <<" Maximal Clique: ";
     for (int v : maximalClique) {
         cout << v+1 << " ";
     }
