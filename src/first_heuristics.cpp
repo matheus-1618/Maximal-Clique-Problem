@@ -52,14 +52,19 @@ vector<int> FindMaximalClique(vector<vector<int>>& graph, int numVertex) {
 
     for (node y : candidates) {
         y.edges = 0;
+
         for (int j = 0; j < numVertex; j++){
+            //cout << graph[0][j] << endl;
+            cout << y.edges << endl;
             y.edges += graph[j][y.id];
         }
+        break;
     }
+    cout << candidates[0].edges << endl;
 
-    for (node y : candidates) {
-        cout << y.id << " " << y.edges << endl;
-    }
+    // for (node y : candidates) {
+    //     cout << y.id << " " << y.edges << endl;
+    // }
     sort(candidates.begin(),candidates.end(),biggerEdges);
 
     while (!candidates.empty()) {
