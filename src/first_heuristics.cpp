@@ -33,7 +33,6 @@ vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
         graph[u - 1][v - 1] = 1;
         graph[v - 1][u - 1] = 1;  // O graph é não direcionado
     }
-
     file.close();
 
     return graph;
@@ -47,26 +46,16 @@ vector<int> FindMaximalClique(vector<vector<int>>& graph, int numVertex) {
     for (int i = 0; i < numVertex; ++i) {
         node candidate;
         candidate.id = i;
+        candidate.edges = 0;
+        int edges = 0;
+        for (int j = 0; j < numVertex; j++){
+            edges += graph[j][i];
+        }
+        candidate.edges = edges;
         candidates.push_back(candidate);
     }
-
-    for (node y : candidates) {
-        y.edges = 0;
-
-        for (int j = 0; j < numVertex; j++){
-            //cout << graph[0][j] << endl;
-            cout << y.edges << endl;
-            y.edges += graph[j][y.id];
-        }
-        break;
-    }
-    cout << candidates[0].edges << endl;
-
-    // for (node y : candidates) {
-    //     cout << y.id << " " << y.edges << endl;
-    // }
     sort(candidates.begin(),candidates.end(),biggerEdges);
-
+  
     while (!candidates.empty()) {
         node v = candidates.back();
         candidates.pop_back();
