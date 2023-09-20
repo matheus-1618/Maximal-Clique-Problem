@@ -1,6 +1,6 @@
-python3 generate_graph.py
-g++ -Wall -O3 -g get_matrix.cpp -o get_matrix
-./get_matrix
-g++ -Wall -O3 -g first_heuristics.cpp -o first_heuristics
-./first_heuristics
-python3 verify_clique.py
+python3 python/generate_graph.py
+g++ -Wall -O3 -g implementations/0_search_clique.cpp -o 0_search_clique
+./0_search_clique
+g++ -Wall -O3 -g implementations/1_edges_heuristic.cpp -o 1_edges_heuristic
+./1_edges_heuristic
+python3 python/verify_clique.py
