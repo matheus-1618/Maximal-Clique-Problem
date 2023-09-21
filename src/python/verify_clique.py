@@ -1,9 +1,8 @@
 import networkx as nx
 import os
 # Nome do arquivo de entrada
-nome_arquivo = "graph.txt"
+nome_arquivo = "implementations/graph.txt"
 
-os.chdir("../implementations")
 # Abrir o arquivo e pular a primeira linha
 with open(nome_arquivo, 'r') as arquivo:
     next(arquivo)  # Pula a primeira linha

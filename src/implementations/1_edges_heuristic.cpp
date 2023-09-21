@@ -93,7 +93,7 @@ int main() {
     int numVertex;
     vector<vector<int>> grafo;
 
-    grafo = ReadGraph("grafo.txt", numVertex);
+    grafo = ReadGraph("graph.txt", numVertex);
     vector<int> maximalClique = FindMaximalClique(grafo, numVertex);
     sort(maximalClique.begin(),maximalClique.end(),biggerThan);
 
