@@ -91,10 +91,10 @@ vector<int> FindMaximalClique(vector<vector<int>>& graph, int numVertex) {
 
 int main() {
     int numVertex;
-    vector<vector<int>> grafo;
+    vector<vector<int>> graph;
 
-    grafo = ReadGraph("graph.txt", numVertex);
-    vector<int> maximalClique = FindMaximalClique(grafo, numVertex);
+    graph = ReadGraph("implementations/graph.txt", numVertex);
+    vector<int> maximalClique = FindMaximalClique(graph, numVertex);
     sort(maximalClique.begin(),maximalClique.end(),biggerThan);
 
     cout << "[Implementation-Heuristics] Clique's Size: "<< maximalClique.size() << " Maximal Clique: ";
