@@ -7,4 +7,8 @@ g++ -Wall -O3 -g implementations/2_recursive_clique.cpp -o 2_recursive_clique
 ./2_recursive_clique
 g++ -Wall -O3 -g implementations/3_dynamic_programming.cpp -o 3_dynamic_programming
 ./3_dynamic_programming
+g++ -Wall -O3 -g -fopenmp implementations/4_recursive_clique_parallel.cpp -o 4_recursive_clique_parallel
+./4_recursive_clique_parallel
+g++ -Wall -O3 -g -fopenmp implementations/5_dynamic_programming_parallel.cpp -o 5_dynamic_programming_parallel
+./5_dynamic_programming_parallel
 python3 python/verify_clique.py
