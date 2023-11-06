@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <map>
 #include <set>
+#include <omp.h>
 
 using namespace std;
 
@@ -32,18 +33,15 @@ vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
 }
 
 bool isClique(const vector<int>& candidate, vector<vector<int>>& graph) {
-    bool found = false;
     int n = candidate.size();
-    #pragma omp parallel for
     for (int i = 0; i < n; ++i) {
         for (int j = i + 1; j < n; ++j) {
             if (graph[candidate[i]][candidate[j]] == 0) {
-                #pragma omp critical
-                found =  true;
+                return false;
             }
         }
     }
-    return found;
+    return true;
 }
 
 void FindAllMaximalCliquesDP(vector<vector<int>>& graph, vector<int>& candidates, vector<int>& currentClique, vector<int>& maximalClique, map<vector<int>, bool>& memo) {
@@ -66,6 +64,7 @@ void FindAllMaximalCliquesDP(vector<vector<int>>& graph, vector<int>& candidates
     currentClique.push_back(v);
 
     vector<int> newCandidates;
+
     #pragma omp parallel for
     for (int u : candidates) {
         if (graph[v][u] == 1) {
@@ -110,7 +109,7 @@ int main() {
     graph = ReadGraph("implementations/graph.txt", numVertex);
     vector<int> maximalClique = FindMaximalClique(graph);
     sort(maximalClique.begin(), maximalClique.end(), biggerThan);
-    cout << "[Implementation-Dynamic] Clique's Size: " << maximalClique.size() << " Maximal Clique: ";
+    cout << "[Implementation-Dynamic Parallel] Clique's Size: " << maximalClique.size() << " Maximal Clique: ";
     for (int v : maximalClique) {
         cout << v + 1 << " ";
     }
