@@ -96,7 +96,7 @@ int main() {
     vector<int> currentClique;
     vector<vector<int>> maximalCliques = FindAllMaximalCliques(graph, candidates, currentClique);
 
-    int maxSize = 0;
+    size_t maxSize = 0;
     vector<int> largestClique;
 
     for (const auto& clique : maximalCliques) {

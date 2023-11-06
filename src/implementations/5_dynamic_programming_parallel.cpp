@@ -106,7 +106,7 @@ int main() {
     vector<int> currentClique;
     vector<vector<int>> maximalCliques = FindAllMaximalCliques(graph, candidates, currentClique);
 
-    int maxSize = 0;
+    size_t maxSize = 0;
     vector<int> largestClique;
     #pragma omp parallel for
     for (const auto& clique : maximalCliques) {
@@ -119,7 +119,7 @@ int main() {
 
     sort(largestClique.begin(), largestClique.end(), biggerThan);
 
-    cout << "[Implementation-Dynamic] Clique's Size: " << maxSize << " Maximal Clique: ";
+    cout << "[Implementation-Dynamic Parallel] Clique's Size: " << maxSize << " Maximal Clique: ";
     for (int v : largestClique) {
         cout << v + 1 << " ";
     }

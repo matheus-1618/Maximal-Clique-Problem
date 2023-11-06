@@ -100,7 +100,7 @@ int main() {
     graph = ReadGraph("implementations/graph.txt", numVertex);
     vector<int> maximalClique = FindMaximalClique(graph);
     sort(maximalClique.begin(),maximalClique.end(),biggerThan);
-    cout << "[Implementation-Recursive] Clique's Size: " << maximalClique.size() << " Maximal Clique: ";
+    cout << "[Implementation-Recursive Parallel] Clique's Size: " << maximalClique.size() << " Maximal Clique: ";
     for (int v : maximalClique) {
         cout << v + 1 << " ";
     }
