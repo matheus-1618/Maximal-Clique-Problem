@@ -33,15 +33,17 @@ vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
 
 bool isClique(vector<int>& candidate, vector<vector<int>>& graph) {
     int n = candidate.size();
+    bool found = false;
     #pragma omp parallel for
     for (int i = 0; i < n; ++i) {
         for (int j = i + 1; j < n; ++j) {
             if (graph[candidate[i]][candidate[j]] == 0) {
-                return false;
+                #pragma omp critical
+                found =  true;
             }
         }
     }
-    return true;
+    return found;
 }
 
 void FindAllMaximalCliques(vector<vector<int>>& graph, vector<int>& candidates, vector<int>& currentClique, vector<int>& maximalClique) {
