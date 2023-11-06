@@ -2,8 +2,9 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include <cmath>
 #include <algorithm>
+#include <map>
+#include <set>
 
 using namespace std;
 
@@ -22,7 +23,7 @@ vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
         int u, v;
         file >> u >> v;
         graph[u - 1][v - 1] = 1;
-        graph[v - 1][u - 1] = 1;  // O graph é não direcionado
+        graph[v - 1][u - 1] = 1;  // The graph is undirected
     }
 
     file.close();
@@ -30,36 +31,40 @@ vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
     return graph;
 }
 
-bool isClique(vector<int>& candidate, vector<vector<int>>& graph) {
-    int n = candidate.size();
+bool isClique(const vector<int>& candidate, vector<vector<int>>& graph) {
     bool found = false;
+    int n = candidate.size();
     #pragma omp parallel for
     for (int i = 0; i < n; ++i) {
         for (int j = i + 1; j < n; ++j) {
             if (graph[candidate[i]][candidate[j]] == 0) {
                 #pragma omp critical
-                found =  true;
+                found =  false;
             }
         }
     }
     return found;
 }
 
-vector<vector<int>> FindAllMaximalCliques(vector<vector<int>>& graph, vector<int>& candidates, vector<int>& currentClique) {
-    vector<vector<int>> maximalCliques;
-
+void FindAllMaximalCliquesDP(vector<vector<int>>& graph, vector<int>& candidates, vector<int>& currentClique, vector<int>& maximalClique, map<vector<int>, bool>& memo) {
     if (candidates.empty()) {
-        maximalCliques.push_back(currentClique);
-        return maximalCliques;
+        if (currentClique.size() > maximalClique.size() && isClique(currentClique, graph)) {
+            maximalClique = currentClique;
+        }
+        return;
+    }
+
+    if (memo.find(currentClique) != memo.end()) {
+        if (!memo[currentClique]) {
+            return;
+        }
     }
 
     int v = candidates.back();
     candidates.pop_back();
 
-    // Include vertex v in the current clique
     currentClique.push_back(v);
 
-    // Find all maximal cliques including v
     vector<int> newCandidates;
     #pragma omp parallel for
     for (int u : candidates) {
@@ -68,36 +73,23 @@ vector<vector<int>> FindAllMaximalCliques(vector<vector<int>>& graph, vector<int
             newCandidates.push_back(u);
         }
     }
-    vector<vector<int>> cliquesWithV = FindAllMaximalCliques(graph, newCandidates, currentClique);
 
-    // Exclude vertex v from the current clique
+    FindAllMaximalCliquesDP(graph, newCandidates, currentClique, maximalClique, memo);
+
     currentClique.pop_back();
-
-    // Find all maximal cliques without v
-    vector<vector<int>> cliquesWithoutV = FindAllMaximalCliques(graph, candidates, currentClique);
-
-    // Combine cliques with v and without v
-    #pragma omp parallel for
-    for (const auto& clique : cliquesWithV) {
-        #pragma omp critical
-        maximalCliques.push_back(clique);
-    }
-    #pragma omp parallel for
-    for (const auto& clique : cliquesWithoutV) {
-        #pragma omp critical
-        maximalCliques.push_back(clique);
-    }
+    FindAllMaximalCliquesDP(graph, candidates, currentClique, maximalClique, memo);
 
     candidates.push_back(v);
 
-    return maximalCliques;
+    if (isClique(currentClique, graph)) {
+        memo[currentClique] = true;
+    } else {
+        memo[currentClique] = false;
+    }
 }
 
-int main() {
-    int numVertex;
-    vector<vector<int>> graph;
-
-    graph = ReadGraph("implementations/graph.txt", numVertex);
+vector<int> FindMaximalClique(vector<vector<int>>& graph) {
+    int numVertex = graph.size();
     vector<int> candidates;
     #pragma omp parallel for
     for (int i = 0; i < numVertex; ++i) {
@@ -105,23 +97,21 @@ int main() {
         candidates.push_back(i);
     }
     vector<int> currentClique;
-    vector<vector<int>> maximalCliques = FindAllMaximalCliques(graph, candidates, currentClique);
+    vector<int> maximalClique;
+    map<vector<int>, bool> memo;
+    FindAllMaximalCliquesDP(graph, candidates, currentClique, maximalClique, memo);
+    return maximalClique;
+}
 
-    size_t maxSize = 0;
-    vector<int> largestClique;
-    #pragma omp parallel for
-    for (const auto& clique : maximalCliques) {
-        if (clique.size() > maxSize) {
-            #pragma omp critical
-            maxSize = clique.size();
-            largestClique = clique;
-        }
-    }
+int main() {
+    int numVertex;
+    vector<vector<int>> graph;
 
-    sort(largestClique.begin(), largestClique.end(), biggerThan);
-
-    cout << "[Implementation-Dynamic Parallel] Clique's Size: " << maxSize << " Maximal Clique: ";
-    for (int v : largestClique) {
+    graph = ReadGraph("implementations/graph.txt", numVertex);
+    vector<int> maximalClique = FindMaximalClique(graph);
+    sort(maximalClique.begin(), maximalClique.end(), biggerThan);
+    cout << "[Implementation-Dynamic] Clique's Size: " << maximalClique.size() << " Maximal Clique: ";
+    for (int v : maximalClique) {
         cout << v + 1 << " ";
     }
     cout << endl;
