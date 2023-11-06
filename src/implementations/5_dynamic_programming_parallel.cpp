@@ -39,7 +39,7 @@ bool isClique(const vector<int>& candidate, vector<vector<int>>& graph) {
         for (int j = i + 1; j < n; ++j) {
             if (graph[candidate[i]][candidate[j]] == 0) {
                 #pragma omp critical
-                found =  false;
+                found =  true;
             }
         }
     }
