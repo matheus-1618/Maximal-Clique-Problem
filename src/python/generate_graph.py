@@ -1,6 +1,6 @@
 
 import networkx as nx
-import matplot.pyplot as plt
+import matplotlib.pyplot as plt
 import random
 import sys
 
