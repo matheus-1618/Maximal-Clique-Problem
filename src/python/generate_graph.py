@@ -37,4 +37,4 @@ if plot:
     nx.draw(grafo, pos, with_labels=True, font_weight='bold', node_size=700, node_color='skyblue', font_color='black', font_size=10, edge_color='gray', linewidths=1, alpha=0.7)
 
     # Show the plot
-    plt.show()
+    plt.savefig("Graph.png")
