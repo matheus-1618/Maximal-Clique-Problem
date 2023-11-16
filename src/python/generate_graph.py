@@ -12,7 +12,7 @@ if len(sys.argv) > 2:
     plot = bool(sys.argv[2])
 
 # Parâmetros
-num_vertices = sys.argv[1]  # Número de vértices no grafo
+num_vertices = int(sys.argv[1])  # Número de vértices no grafo
 probabilidade_conexao = 0.7  # Probabilidade de haver uma aresta entre dois vértices (ajuste conforme necessário)
 
 # Crie um grafo aleatório densamente conectado
