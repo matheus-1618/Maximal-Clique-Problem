@@ -1,10 +1,18 @@
 
 import networkx as nx
+import matplot.pyplot as plt
 import random
+import sys
 
+plot = False
+if len(sys.argv) == 1:
+    print("Usage: python script.py <number_of_vertex> <plot[1 to plot]> ...")
+    sys.exit(1)  # Exit with an error code
+if len(sys.argv) > 2:
+    plot = bool(sys.argv[2])
 
 # Parâmetros
-num_vertices = 55  # Número de vértices no grafo
+num_vertices = sys.argv[1]  # Número de vértices no grafo
 probabilidade_conexao = 0.7  # Probabilidade de haver uma aresta entre dois vértices (ajuste conforme necessário)
 
 # Crie um grafo aleatório densamente conectado
@@ -22,3 +30,11 @@ with open(nome_arquivo, 'w') as arquivo:
         arquivo.write(f"{aresta[0]+1} {aresta[1]+1}\n")  # +1 para ajustar os índices (começando em 1)
 
 print(f"Grafo densamente conectado gerado e salvo em '{nome_arquivo}'.")
+
+if plot:
+    # Plot the graph
+    pos = nx.spring_layout(grafo)  # Layout algorithm (you can choose other layouts)
+    nx.draw(grafo, pos, with_labels=True, font_weight='bold', node_size=700, node_color='skyblue', font_color='black', font_size=10, edge_color='gray', linewidths=1, alpha=0.7)
+
+    # Show the plot
+    plt.show()
