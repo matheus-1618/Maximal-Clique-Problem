@@ -34,8 +34,8 @@ vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
 bool isClique(vector<int>& candidate, vector<vector<int>>& graph) {
     int n = candidate.size();
     bool found = false;
-    #pragma omp parallel for
     for (int i = 0; i < n; ++i) {
+        #pragma omp parallel for
         for (int j = i + 1; j < n; ++j) {
             if (graph[candidate[i]][candidate[j]] == 0) {
                 #pragma omp critical
@@ -62,10 +62,10 @@ void FindAllMaximalCliques(vector<vector<int>>& graph, vector<int>& candidates, 
 
     // Find all maximal cliques including v
     vector<int> newCandidates;
-    #pragma omp parallel for
+    //#pragma omp parallel for
     for (int u : candidates) {
         if (graph[v][u] == 1) {
-            #pragma omp critical
+      //      #pragma omp critical
             newCandidates.push_back(u);
         }
     }
@@ -83,9 +83,9 @@ void FindAllMaximalCliques(vector<vector<int>>& graph, vector<int>& candidates, 
 vector<int> FindMaximalClique(vector<vector<int>>& graph) {
     int numVertex = graph.size();
     vector<int> candidates;
-    #pragma omp parallel for
+    //#pragma omp parallel for
     for (int i = 0; i < numVertex; ++i) {
-        #pragma omp critical
+       // #pragma omp critical
         candidates.push_back(i);
     }
     vector<int> currentClique;
