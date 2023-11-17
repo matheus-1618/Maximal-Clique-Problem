@@ -44,7 +44,7 @@ bool isClique(vector<int>& candidate, vector<vector<int>>& graph) {
 
 void FindAllMaximalCliques(vector<vector<int>>& graph, vector<int>& candidates, vector<int>& currentClique, vector<int>& maximalClique) {
     if (candidates.empty()) {
-        if (currentClique.size() > maximalClique.size()) {
+        if (currentClique.size() > maximalClique.size() && isClique(currentClique, graph)) {
             maximalClique = currentClique;
         }
         return;

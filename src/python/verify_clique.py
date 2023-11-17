@@ -20,4 +20,4 @@ clique_maxima = max(cliques_maximais, key=len)
 # for clique in cliques_maximais:
 #     print(sorted(map(int,clique)))
 
-print(f"[Verification] Clique's Size: {len(clique_maxima)} Maximal Clique: ", sorted(map(int,clique_maxima)))
+print(f"[Verification] Clique's Size: {len(clique_maxima)} Maximal Clique: ", " ".join(map(str,sorted(map(int,clique_maxima)))))

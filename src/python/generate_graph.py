@@ -9,7 +9,7 @@ if len(sys.argv) == 1:
     print("Usage: python script.py <number_of_vertex> <plot[1 to plot]> ...")
     sys.exit(1)  # Exit with an error code
 if len(sys.argv) > 2:
-    plot = bool(sys.argv[2])
+    plot = bool(int(sys.argv[2]))
 
 # Parâmetros
 num_vertices = int(sys.argv[1])  # Número de vértices no grafo

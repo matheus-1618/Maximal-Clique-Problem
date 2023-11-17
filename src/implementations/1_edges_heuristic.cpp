@@ -54,6 +54,7 @@ vector<int> FindMaximalClique(vector<vector<int>>& graph, int numVertex) {
         candidate.edges = edges;
         candidates.push_back(candidate);
     }
+    
     sort(candidates.begin(),candidates.end(),biggerEdges);
   
     while (!candidates.empty()) {
