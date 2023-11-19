@@ -1,19 +1,19 @@
 #!/bin/bash
 
 python3 python/generate_graph.py $1 $2
-g++ -Wall -O3 -g implementations/0_search_clique.cpp -o 0_search_clique
-time ./0_search_clique
-g++ -Wall -O3 -g implementations/1_edges_heuristic.cpp -o 1_edges_heuristic
-time ./1_edges_heuristic
-g++ -Wall -O3 -g implementations/2_recursive_clique.cpp -o 2_recursive_clique
-time ./2_recursive_clique
-g++ -Wall -O3 -g implementations/3_dynamic_programming.cpp -o 3_dynamic_programming
-time ./3_dynamic_programming
-g++ -Wall -O3 -g -fopenmp implementations/4_recursive_clique_parallel.cpp -o 4_recursive_clique_parallel
-time ./4_recursive_clique_parallel
-g++ -Wall -O3 -g -fopenmp implementations/5_dynamic_programming_parallel.cpp -o 5_dynamic_programming_parallel
-time ./5_dynamic_programming_parallel
+g++ -Wall -O3 -g implementations/1_exaustive_recursive.cpp -o 1_exaustive_recursive
+time ./1_exaustive_recursive
+g++ -Wall -O3 -g implementations/2_exaustive_iterative.cpp -o 2_exaustive_iterative
+time ./2_exaustive_iterative
+g++ -Wall -O3 -g implementations/3_edges_heuristic.cpp -o 3_edges_heuristic
+time ./3_edges_heuristic
+g++ -Wall -O3 -g implementations/4_dynamic_programming.cpp -o 4_dynamic_programming
+time ./4_dynamic_programming
+g++ -Wall -O3 -g -fopenmp implementations/5_exaustive_parallel.cpp -o 5_exaustive_parallel
+time ./5_exaustive_parallel
+g++ -Wall -O3 -g -fopenmp implementations/6_dynamic_programming_parallel.cpp -o 6_dynamic_programming_parallel
+time ./6_dynamic_programming_parallel
 time python3 python/verify_clique.py
 
 # Delete compiled executables
-rm 0_search_clique 1_edges_heuristic 2_recursive_clique 3_dynamic_programming 4_recursive_clique_parallel 5_dynamic_programming_parallel
+rm 1_exaustive_recursive 2_exaustive_iterative 3_edges_heuristic 4_dynamic_programming 5_exaustive_parallel 6_dynamic_programming_parallel
