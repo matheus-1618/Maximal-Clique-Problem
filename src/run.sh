@@ -1,3 +1,5 @@
+#!/bin/bash
+
 python3 python/generate_graph.py $1 $2
 g++ -Wall -O3 -g implementations/0_search_clique.cpp -o 0_search_clique
 time ./0_search_clique
@@ -12,3 +14,6 @@ time ./4_recursive_clique_parallel
 g++ -Wall -O3 -g -fopenmp implementations/5_dynamic_programming_parallel.cpp -o 5_dynamic_programming_parallel
 time ./5_dynamic_programming_parallel
 time python3 python/verify_clique.py
+
+# Delete compiled executables
+rm 0_search_clique 1_edges_heuristic 2_recursive_clique 3_dynamic_programming 4_recursive_clique_parallel 5_dynamic_programming_parallel
