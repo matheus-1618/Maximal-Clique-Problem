@@ -5,6 +5,7 @@
 #include <cmath>
 #include <algorithm>
 #include <stack>
+#include <omp.h>
 
 using namespace std;
 
@@ -19,8 +20,10 @@ vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
 
     vector<vector<int>> graph(numVertex, vector<int>(numVertex, 0));
 
+    #pragma omp parallel for
     for (int i = 0; i < numEdges; ++i) {
         int u, v;
+        #pragma omp critical
         file >> u >> v;
         graph[u - 1][v - 1] = 1;
         graph[v - 1][u - 1] = 1;  // O graph é não direcionado
@@ -33,21 +36,23 @@ vector<vector<int>> ReadGraph(const std::string& fileName, int& numVertex) {
 
 bool isClique(vector<int>& candidate, vector<vector<int>>& graph) {
     int n = candidate.size();
+    bool clique = true;
+
+    #pragma omp parallel for shared(clique)
     for (int i = 0; i < n; ++i) {
         for (int j = i + 1; j < n; ++j) {
             if (graph[candidate[i]][candidate[j]] == 0) {
-                return false;
+                #pragma omp critical
+                clique = false;
             }
         }
     }
-    return true;
+
+    return clique;
 }
 
 void FindAllMaximalCliquesIterative(vector<vector<int>>& graph, vector<int>& candidates, vector<int>& currentClique, vector<int>& maximalClique) {
-    // Declare the explorationStack variable before using it
     stack<pair<vector<int>, vector<int>>> explorationStack;
-
-    // Use a stack to store potential cliques to explore
     explorationStack.push({candidates, currentClique});
 
     while (!explorationStack.empty()) {
@@ -66,15 +71,18 @@ void FindAllMaximalCliquesIterative(vector<vector<int>>& graph, vector<int>& can
 
         int v = candidates.back();
         candidates.pop_back();
-
+        
         // Include vertex v in the current clique and explore
         currentClique.push_back(v);
         vector<int> newCandidates;
+
         for (int u : candidates) {
             if (graph[v][u] == 1) {
+                //#pragma omp critical
                 newCandidates.push_back(u);
             }
         }
+
         explorationStack.push({newCandidates, currentClique});
 
         // Exclude vertex v from the current clique and explore
@@ -102,7 +110,7 @@ int main() {
     graph = ReadGraph("implementations/graph.txt", numVertex);
     vector<int> maximalClique = FindMaximalClique(graph);
     sort(maximalClique.begin(), maximalClique.end(), biggerThan);
-    cout << "[Implementation-Iterative] Clique's Size: " << maximalClique.size() << " Maximal Clique: ";
+    cout << "[Implementation-Iterative Parallel] Clique's Size: " << maximalClique.size() << " Maximal Clique: ";
     for (int v : maximalClique) {
         cout << v + 1 << " ";
     }
