@@ -42,7 +42,7 @@ vector<int> FindMaximalClique(vector<vector<int>>& graph, int numVertex) {
     vector<int> MaximalClique;
     vector<node> candidates;
 
-    // In the begin, all nodes are possible candidates
+    // In the beginning, all nodes are possible candidates
     for (int i = 0; i < numVertex; ++i) {
         node candidate;
         candidate.id = i;
@@ -55,40 +55,55 @@ vector<int> FindMaximalClique(vector<vector<int>>& graph, int numVertex) {
         candidates.push_back(candidate);
     }
     
-    sort(candidates.begin(),candidates.end(),biggerEdges);
-  
-    while (!candidates.empty()) {
-        node v = candidates.back();
-        candidates.pop_back();
-        bool canAdd = true;
+    sort(candidates.begin(), candidates.end(), biggerEdges);
 
-        for (int u : MaximalClique) {
-            if (graph[u][v.id] == 0) {
-                canAdd = false;
-                break;
+    for (int i = 0; i < numVertex; ++i) {
+        vector<node> localCandidates = candidates;
+        vector<int> Clique;
+        while (!localCandidates.empty()) {
+            node v = localCandidates.back();
+            localCandidates.pop_back();
+            bool canAdd = true;
+
+            for (int u : Clique) {
+                if (graph[u][v.id] == 0) {
+                    canAdd = false;
+                    break;
+                }
             }
-        }
 
-        if (canAdd) {
-            MaximalClique.push_back(v.id);
-            vector<node> newCandidates;
-            for (node u : candidates) {
-                bool adjacentToAll = true;
-                for (int c : MaximalClique) {
-                    if (graph[u.id][c] == 0) {
-                        adjacentToAll = false;
-                        break;
+            if (canAdd) {
+                Clique.push_back(v.id);
+                vector<node> newLocalCandidates;
+                for (node u : localCandidates) {
+                    bool adjacentToAll = true;
+                    for (int c : Clique) {
+                        if (graph[u.id][c] == 0) {
+                            adjacentToAll = false;
+                            break;
+                        }
+                    }
+                    if (adjacentToAll) {
+                        newLocalCandidates.push_back(u);
                     }
                 }
-                if (adjacentToAll) {
-                    newCandidates.push_back(u);
-                }
+                localCandidates = newLocalCandidates;
             }
-            candidates = newCandidates;
+        }
+
+        // Rotate candidates after the while loop in the for loop
+        std::rotate(candidates.begin(), candidates.end() - 1, candidates.end());
+
+        // Check if the size of the current clique is larger than the existing maximal clique
+        if (MaximalClique.size() < Clique.size()) {
+            MaximalClique = Clique;
         }
     }
+
     return MaximalClique;
 }
+
+
 
 int main() {
     int numVertex;
