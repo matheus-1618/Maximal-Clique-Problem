@@ -43,8 +43,8 @@ bool isClique(vector<int>& candidate, vector<vector<int>>& graph) {
         return memoTable[n][candidate.back()];
     }
 
+    #pragma omp parallel for shared(clique) collapse(2) 
     for (int i = 0; i < n; ++i) {
-        #pragma omp parallel for shared(clique)
         for (int j = i + 1; j < n; ++j) {
             if (graph[candidate[i]][candidate[j]] == 0) {
                 // Memoize the result before returning
@@ -93,7 +93,9 @@ void FindAllMaximalCliques(vector<vector<int>>& graph, vector<int>& candidates, 
 vector<int> FindMaximalClique(vector<vector<int>>& graph) {
     int numVertex = graph.size();
     vector<int> candidates;
+    #pragma omp parallel for
     for (int i = 0; i < numVertex; ++i) {
+        #pragma omp critical
         candidates.push_back(i);
     }
     vector<int> currentClique;
