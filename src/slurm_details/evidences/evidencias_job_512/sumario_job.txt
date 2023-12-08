@@ -1,0 +1,4 @@
+     User    JobName  Partition      State  Timelimit        NodeList     ReqMem 
+--------- ---------- ---------- ---------- ---------- --------------- ---------- 
+  matheus 9_mpi_rec+     normal  COMPLETED             compute[00-01]         0n 
+               orted             COMPLETED                  compute01         0n 

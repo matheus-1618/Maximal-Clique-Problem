@@ -1,0 +1,4 @@
+       JobID    Account      User 
+------------ ---------- --------- 
+506              (null)   matheus 
+506.0            (null)           

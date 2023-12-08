@@ -17,7 +17,8 @@ g++ -Wall -O3 -g -fopenmp implementations/7_dynamic_programming_parallel.cpp -o 
 time ./7_dynamic_programming_parallel
 time python3 python/verify_clique.py
 
-mpic++ -Wall -O3 implementations/8_mpi_recursive.cpp -o 8_mpi_recursive
+mpic++ -Wall -O3 8_mpi_recursive.cpp -o 8_mpi_recursive
+mpic++ -Wall -O3 9_mpi_recursive_subgraph.cpp -o 9_mpi_recursive_subgraph
 
 # Delete compiled executables
 rm   1_exaustive_recursive 2_exaustive_iterative 3_edges_heuristic 4_dynamic_programming 5_exaustive_recursive_parallel 6_exaustive_iterative_parallel 7_dynamic_programming_parallel
